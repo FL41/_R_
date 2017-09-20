@@ -96,6 +96,27 @@ getwd()
 mydata<-data.frame(age=numeric(0),gender=character(0),weight==numeric(0))
 mydata<-edit(mydata)
 
+#带分隔符的文本文件导入数据
+grades<-read.table("studentgrades.csv",header = TRUE,sep=",",row.names = "STUDENTID")
+
+install.packages("RODBC")
+install.packages("xlsx")
+
+#xls文件导出为csv，再同上导入R
+library(RODBC)
+channel<-odbcConnectExcel("myfile.xls")
+mydataframe<-sqlFetch(channel,"mysheet")
+odbcClose(channel)
+
+#xlsx文件导出R数据框
+library(xlsx)
+workbook<-"C:/Users/Administrator/Desktop/test.xlsx"
+mydataframe<-read.xlsx(workbook,1)
+mydataframe
+
+#从网页抓取数据参考：http://www.programmingr.com/examples/examples-web-scraping-r/
+
+
 
 
 
