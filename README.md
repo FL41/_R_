@@ -1,6 +1,3 @@
-# _R_
-R语言实践学习代码
-
 age<-c(1,3,5,2,11,9,3,9,12,3)
 weight<-c(4.4,5.3,7.2,5.2,8.5,7.3,6.0,10.4,10.2,6.1)
 plot(age,weight)
@@ -95,6 +92,9 @@ mylist[["ages"]]
 
 getwd()
 
+#键盘输入数据
+mydata<-data.frame(age=numeric(0),gender=character(0),weight==numeric(0))
+mydata<-edit(mydata)
 
 
 
