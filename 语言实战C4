@@ -1,0 +1,116 @@
+#第四章 基本数据管理
+###############################
+# 操纵日期和缺失值            #
+# 熟悉数据类型的转换          #
+# 变量的创建和重编码          #
+# 数据集的排序，合并与取子集  #
+# 选入和丢弃变量              #
+###############################
+
+#代码4-1 创建leadership数据
+manager<-c(1,2,3,4,5)
+date<-c("10/24/08","10/28/08","10/1/08","10/12/08","05/1/09")
+country<-c("US","US","UK","UK","UK")
+gender<-c("M","F","F","M","F")
+age<-c(32,45,25,39,99)
+q1<-c(5,3,3,3,2)
+q2<-c(4,5,5,3,2)
+q3<-c(5,2,5,4,1)
+q4<-c(5,5,5,NA,2)
+q5<-c(5,5,2,NA,1)
+leadership<-data.frame(manager,date,country,gender,age,q1,q2,q3,q4,q5,stringsAsFactors = FALSE)
+leadership
+newdata<-na.omit(leadership)  #仅含完整观测的数据框
+newdata
+
+
+leadership$age[leadership$age==99]<-NA
+
+leadership$agecat[leadership$age>75]<-"Elder"
+leadership$agecat[leadership$age>=55&leadership$age<=75]<-"Middle Aged"
+leadership$agecat[leadership$age<55]<-"Young"
+leadership
+
+
+
+fix(leadership)
+
+#代码4-2 创建新变量
+mydata<-data.frame(x1=c(2,2,6,4),x2=c(3,4,2,8))
+#way 1
+mydata$sumx<-mydata$x1+mydata$x2
+mydata$meanx<-(mydata$x1+mydata$x2)/2
+#way 2
+attach(mydata)
+mydata$sumx<-x1+x2
+mydata$meanx<-(x1+x2)/2
+detach(mydata)
+#way 3
+mydata<-transform(mydata,sumx=x1+x2,meanx=(x1+x2)/2)
+
+
+today<-Sys.Date()
+fzj<-as.Date("1993-10-04")
+difftime(today,fzj,units = "weeks")
+difftime(today,fzj,units = "days")
+difftime(today,fzj,units = "hours")
+difftime(today,fzj,units = "mins")
+difftime(today,fzj,units = "secs")
+
+#代码清单4-5 转换数据类型
+a<-c(1,2,3)
+a
+is.numeric(a)
+is.vector(a)
+
+a<-as.character(a)
+a
+is.numeric(a)
+is.vector(a)
+is.character(a)
+
+#默认升序排列，降序在变量前加减号即可
+attach(leadership)
+newdata<-leadership[order(gender,-age),]
+detach(leadership)
+newdata
+
+#横向合并数据框，添加列，用merge()(相当于内联结inner join)
+total<-merge(data.frameA,data.frameB,by="ID")
+total<-merge(data.frameA,data.frameB,by=c("ID","Country"))
+
+#纵向合并数据框，添加行，用rbind()(拥有相同变量)
+total<-rbind(data.frameA,data.frameB)
+
+#选择变量和观测
+newdata<-subset(leadership,age>=35|age<24,select=c(q1,q2,q3,q4))
+newdata
+newdata<-subset(leadership,gender=="M"&age>25,select=gender:q4)
+newdata
+
+#随机取样
+mysample<-leadership[sample(1:nrow(leadership),3,replace = FALSE),]
+mysample
+
+install.packages("sqldf")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
