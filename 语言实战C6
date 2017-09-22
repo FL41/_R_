@@ -1,0 +1,66 @@
+#第六章 基本图形
+###############################
+#条形图                      #
+#饼图和扇形图                #
+#直方图与核密度图            #
+###############################
+
+
+install.packages("vcd")
+#条形图
+library(vcd)
+counts<-table(Arthritis$Improved)
+counts
+
+#代码6-1 简单的条形图
+barplot(counts,
+        main="Simple Bar Plot",
+        xlab = "Improvement",ylab = "Frequency")
+
+barplot(counts,
+        main="Horizontal Bar Plot",
+        xlab = "Frequency",ylab = "Improvement",
+        horiz = TRUE)
+
+#代码6-2 堆砌条形图和分组条形图
+library(vcd)
+counts<-table(Arthritis$Improved,Arthritis$Treatment)
+counts
+
+barplot(counts,
+        main="Stacked Bar Plot",
+        xlab = "Treatment",ylab = "Frequency",
+        col=c("red","yellow","green"),
+        legend=rownames(counts))
+
+barplot(counts,
+        main="Grouped Bar Plot",
+        xlab = "Treatment",ylab = "Frequency",
+        col=c("red","yellow","green"),
+        legend=rownames(counts),beside=TRUE)
+
+#棘状图，高度为1的特殊堆砌条形图
+library(vcd)
+attach(Arthritis)
+counts<-table(Treatment,Improved)
+spine(counts,main = "Spinogram Example")
+detach(Arthritis)
+
+#饼图 pie(x,labels)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
