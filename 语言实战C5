@@ -1,0 +1,142 @@
+#第五章 高级数据管理
+###############################
+#数学和统计函数              #
+#字符处理函数                #
+#循环和条件执行              #
+#自编函数                    #
+#数据整合和重塑              #
+###############################
+
+#代码清单5-1 均值和标准差的计算
+x<-c(1:8)
+mean(x)
+sd(x)
+
+?scale
+
+#正态分布函数
+x<-pretty(c(-3,3),30)
+y<-dnorm(x)  #密度函数
+plot(x,y,type = "l",xlab = "NormalDeviate",
+     ylab = "Density",yaxs="i")
+
+#代码5-2 生成服从正态分布的伪随机数
+runif(5)   #[0,1]
+
+#代码5-3 生成服从多元正态分布的数据
+library(MASS)
+options(digits = 3)
+set.seed(1234)   #设定随机数种子
+
+mean<-c(230.7,146.7,3.6)
+sigma<-matrix(c(15360.8,6721.2,-47.1,   #指定均值向量、协方差阵
+                6721.2,4700.9,-16.5,
+                -47.1,-16.5,0.3),nrow = 3,ncol = 3)
+
+mydata<-mvrnorm(500,mean,sigma)  #指定均值向量、方差-协方矩阵，生成500伪随机观测
+mydata<-as.data.frame(mydata)  #转化为数据框
+names(mydata)<-c("y","x1","x2") #更名
+dim(mydata)  #查看结果
+head(mydata,n=10)
+
+
+#代码5-4 将函数应用于数据对象
+a<-5
+sqrt(a)
+b<-c(1.243,5.654,2.99)
+round(b)
+c<-matrix(runif(12),nrow = 3)
+log(c)
+mean(c)
+
+#代码5-5 将一个函数应用到矩阵的所有行（列）
+mydata<-matrix(rnorm(30),nrow = 6)
+mydata
+apply(mydata,1,mean) #计算每行均值
+apply(mydata,2,mean) #计算每列均值
+apply(mydata,2,mean,trim=0.2) #计算每列的结尾均值
+
+#代码5-6 示例的一种解决方案
+###############################################################################
+#一组学生参加了数学、科学和英语考试。为了给所有学生确定一个单一的成绩衡量指标，
+#需要将这些科目的成绩组合起来。另外，你还想将前20%的学生评定为A，
+#接下来20%的学生评定为B，依次类推。最后，你希望按字母顺序对学生排序。
+###############################################################################
+options(digits = 2)     #限定输出小数后数字的位数
+
+Student<-c("John Davis","Angela Williams","Bullwinkle Moose","David Jones","Janice Markhammer","Cheryl Cushing","Reuven Ytzrhak","Greg Knox","Joel England","Mary Rayburn"
+)
+Math<-c(502,600,412,358,495,512,410,625,573,522)
+Science<-c(95,99,80,82,75,85,80,95,89,86)
+English<-c(25,22,18,15,20,28,15,30,27,18)
+roster<-data.frame(Student,Math,Science,English,stringsAsFactors = FALSE)
+Z<-scale(roster[,2:4])
+score<-apply(z,1,mean)
+roster<-cbind(roster,score)
+y<-quantile(score,c(.8,.6,.4,.2))
+roster$grade[score>=y[1]]<-"A"
+roster$grade[score<y[1]&score>-y[2]]<-"B"
+roster$grade[score<y[2]&score>-y[3]]<-"C"
+roster$grade[score<y[3]&score>-y[4]]<-"D"
+roster$grade[score<y[1]]<-"F"
+
+name<-strsplit((roster$Student)," ")
+lastname<-sapply(name,"[",2)
+firstname<-sapply(name,"[",1)
+roster<-obind(firstname,lastname,roster[,-1])
+
+roster<-roster[order(lastname,firstname),]
+roster
+
+#代码清单5-7 一个switch示例
+feelings<-c("sad","afraid")
+for(i in feelings)
+  print(
+    switch(i,
+           happy="I am glad you are happy",
+           afraid="There is nothing to fear",
+           sad="Cheer up",
+           angry="Calm down now"
+           )
+  )
+
+#数据集转置 t()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
